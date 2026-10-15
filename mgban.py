@@ -24,6 +24,22 @@ from urllib.parse import (
 from typing import Optional, Tuple, List, Dict, Any
 
 import aiohttp
+from flask import Flask
+import threading
+
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "Bot is running!"
+
+def run_web():
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
+
+web_thread = threading.Thread(target=run_web)
+web_thread.daemon = True
+web_thread.start()
 
 try:
     from aiohttp_socks import ProxyConnector
